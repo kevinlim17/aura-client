@@ -3,29 +3,39 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
 
-/// Visual impairment severity level
-enum DisabilitySeverity {
+/// User type as defined by the API
+enum UserType {
+  @JsonValue('MAIN_USER')
+  mainUser,
+  @JsonValue('COMPANION')
+  companion,
+}
+
+/// Visual impairment level as defined by the API
+enum ImpairmentLevel {
   @JsonValue('TOTAL_BLINDNESS')
   totalBlindness,
   @JsonValue('LOW_VISION')
   lowVision,
-  @JsonValue('NONE')
+  @JsonValue('NONE') // Added for non-impaired users
   none,
 }
 
 /// User entity representing the authenticated user
 @freezed
 class UserEntity with _$UserEntity {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory UserEntity({
     required String id,
     required String email,
-    required String name,
+    String? name, // Name is not returned from register endpoint
+    required UserType userType,
     required bool isVisuallyImpaired,
-    required DisabilitySeverity disabilitySeverity,
+    required ImpairmentLevel impairmentLevel,
+    required bool isOnboardingCompleted,
     required DateTime createdAt,
     DateTime? lastLoginAt,
     String? profileImageUrl,
-    String? bio,
   }) = _UserEntity;
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
@@ -37,13 +47,6 @@ extension UserEntityX on UserEntity {
   /// Check if user requires TTS feedback
   bool get requiresTts => isVisuallyImpaired;
 
-  /// Check if user has total blindness
-  bool get isTotallyBlind =>
-      disabilitySeverity == DisabilitySeverity.totalBlindness;
-
-  /// Check if user has low vision
-  bool get hasLowVision => disabilitySeverity == DisabilitySeverity.lowVision;
-
   /// Get display name with fallback
-  String get displayName => name.isEmpty ? email.split('@').first : name;
+  String get displayName => name ?? email.split('@').first;
 }

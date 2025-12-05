@@ -10,18 +10,19 @@ _$UserEntityImpl _$$UserEntityImplFromJson(Map<String, dynamic> json) =>
     _$UserEntityImpl(
       id: json['id'] as String,
       email: json['email'] as String,
-      name: json['name'] as String,
-      isVisuallyImpaired: json['isVisuallyImpaired'] as bool,
-      disabilitySeverity: $enumDecode(
-        _$DisabilitySeverityEnumMap,
-        json['disabilitySeverity'],
+      name: json['name'] as String?,
+      userType: $enumDecode(_$UserTypeEnumMap, json['user_type']),
+      isVisuallyImpaired: json['is_visually_impaired'] as bool,
+      impairmentLevel: $enumDecode(
+        _$ImpairmentLevelEnumMap,
+        json['impairment_level'],
       ),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      lastLoginAt: json['lastLoginAt'] == null
+      isOnboardingCompleted: json['is_onboarding_completed'] as bool,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      lastLoginAt: json['last_login_at'] == null
           ? null
-          : DateTime.parse(json['lastLoginAt'] as String),
-      profileImageUrl: json['profileImageUrl'] as String?,
-      bio: json['bio'] as String?,
+          : DateTime.parse(json['last_login_at'] as String),
+      profileImageUrl: json['profile_image_url'] as String?,
     );
 
 Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
@@ -29,17 +30,22 @@ Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
       'id': instance.id,
       'email': instance.email,
       'name': instance.name,
-      'isVisuallyImpaired': instance.isVisuallyImpaired,
-      'disabilitySeverity':
-          _$DisabilitySeverityEnumMap[instance.disabilitySeverity]!,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'lastLoginAt': instance.lastLoginAt?.toIso8601String(),
-      'profileImageUrl': instance.profileImageUrl,
-      'bio': instance.bio,
+      'user_type': _$UserTypeEnumMap[instance.userType]!,
+      'is_visually_impaired': instance.isVisuallyImpaired,
+      'impairment_level': _$ImpairmentLevelEnumMap[instance.impairmentLevel]!,
+      'is_onboarding_completed': instance.isOnboardingCompleted,
+      'created_at': instance.createdAt.toIso8601String(),
+      'last_login_at': instance.lastLoginAt?.toIso8601String(),
+      'profile_image_url': instance.profileImageUrl,
     };
 
-const _$DisabilitySeverityEnumMap = {
-  DisabilitySeverity.totalBlindness: 'TOTAL_BLINDNESS',
-  DisabilitySeverity.lowVision: 'LOW_VISION',
-  DisabilitySeverity.none: 'NONE',
+const _$UserTypeEnumMap = {
+  UserType.mainUser: 'MAIN_USER',
+  UserType.companion: 'COMPANION',
+};
+
+const _$ImpairmentLevelEnumMap = {
+  ImpairmentLevel.totalBlindness: 'TOTAL_BLINDNESS',
+  ImpairmentLevel.lowVision: 'LOW_VISION',
+  ImpairmentLevel.none: 'NONE',
 };

@@ -109,21 +109,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     await authNotifier.login(
       email: _emailController.text.trim(),
       password: _passwordController.text,
-      enableTts: true,
     );
 
     // Check login result
     final authState = ref.read(authNotifierProvider);
     authState.maybeWhen(
-      authenticated: (_, __, ___) {
+      authenticated: (user, accessToken) {
         // Login successful - navigation handled by app router
         // Nothing to do here as main.dart will handle navigation
       },
-      error: (message, _) {
+      error: (error) {
         // Error handled by auth notifier TTS
         // Show error dialog for visual users
         if (mounted) {
-          _showErrorDialog(message);
+          _showErrorDialog(error.message);
         }
       },
       orElse: () {},

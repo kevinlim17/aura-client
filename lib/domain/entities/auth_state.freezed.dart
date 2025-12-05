@@ -21,32 +21,26 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
+    required TResult Function(UserEntity user, String accessToken)
     authenticated,
-    required TResult Function(String message, String? errorCode) error,
     required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
     TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
     TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,24 +48,24 @@ mixin _$AuthState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
     required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
     TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
     TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -141,14 +135,10 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
+    required TResult Function(UserEntity user, String accessToken)
     authenticated,
-    required TResult Function(String message, String? errorCode) error,
     required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
   }) {
     return initial();
   }
@@ -158,10 +148,9 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
     TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
   }) {
     return initial?.call();
   }
@@ -171,10 +160,9 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
     TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -189,8 +177,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
     required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
   }) {
     return initial(this);
   }
@@ -201,8 +189,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
     TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
   }
@@ -213,8 +201,8 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
     TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -273,14 +261,10 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
+    required TResult Function(UserEntity user, String accessToken)
     authenticated,
-    required TResult Function(String message, String? errorCode) error,
     required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
   }) {
     return loading();
   }
@@ -290,10 +274,9 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
     TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
   }) {
     return loading?.call();
   }
@@ -303,10 +286,9 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
     TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -321,8 +303,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
     required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
   }) {
     return loading(this);
   }
@@ -333,8 +315,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
     TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
   }
@@ -345,8 +327,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
     TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -367,7 +349,7 @@ abstract class _$$AuthenticatedImplCopyWith<$Res> {
     $Res Function(_$AuthenticatedImpl) then,
   ) = __$$AuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({UserEntity user, String token, DateTime tokenExpiry});
+  $Res call({UserEntity user, String accessToken});
 
   $UserEntityCopyWith<$Res> get user;
 }
@@ -385,25 +367,17 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? user = null,
-    Object? token = null,
-    Object? tokenExpiry = null,
-  }) {
+  $Res call({Object? user = null, Object? accessToken = null}) {
     return _then(
       _$AuthenticatedImpl(
         user: null == user
             ? _value.user
             : user // ignore: cast_nullable_to_non_nullable
                   as UserEntity,
-        token: null == token
-            ? _value.token
-            : token // ignore: cast_nullable_to_non_nullable
+        accessToken: null == accessToken
+            ? _value.accessToken
+            : accessToken // ignore: cast_nullable_to_non_nullable
                   as String,
-        tokenExpiry: null == tokenExpiry
-            ? _value.tokenExpiry
-            : tokenExpiry // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
       ),
     );
   }
@@ -422,22 +396,16 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthenticatedImpl implements _Authenticated {
-  const _$AuthenticatedImpl({
-    required this.user,
-    required this.token,
-    required this.tokenExpiry,
-  });
+  const _$AuthenticatedImpl({required this.user, required this.accessToken});
 
   @override
   final UserEntity user;
   @override
-  final String token;
-  @override
-  final DateTime tokenExpiry;
+  final String accessToken;
 
   @override
   String toString() {
-    return 'AuthState.authenticated(user: $user, token: $token, tokenExpiry: $tokenExpiry)';
+    return 'AuthState.authenticated(user: $user, accessToken: $accessToken)';
   }
 
   @override
@@ -446,13 +414,12 @@ class _$AuthenticatedImpl implements _Authenticated {
         (other.runtimeType == runtimeType &&
             other is _$AuthenticatedImpl &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.token, token) || other.token == token) &&
-            (identical(other.tokenExpiry, tokenExpiry) ||
-                other.tokenExpiry == tokenExpiry));
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user, token, tokenExpiry);
+  int get hashCode => Object.hash(runtimeType, user, accessToken);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -467,16 +434,12 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
+    required TResult Function(UserEntity user, String accessToken)
     authenticated,
-    required TResult Function(String message, String? errorCode) error,
     required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
   }) {
-    return authenticated(user, token, tokenExpiry);
+    return authenticated(user, accessToken);
   }
 
   @override
@@ -484,12 +447,11 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
     TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
   }) {
-    return authenticated?.call(user, token, tokenExpiry);
+    return authenticated?.call(user, accessToken);
   }
 
   @override
@@ -497,14 +459,13 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
     TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(user, token, tokenExpiry);
+      return authenticated(user, accessToken);
     }
     return orElse();
   }
@@ -515,8 +476,8 @@ class _$AuthenticatedImpl implements _Authenticated {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
     required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
   }) {
     return authenticated(this);
   }
@@ -527,8 +488,8 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
     TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
   }) {
     return authenticated?.call(this);
   }
@@ -539,8 +500,8 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
     TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
@@ -553,197 +514,16 @@ class _$AuthenticatedImpl implements _Authenticated {
 abstract class _Authenticated implements AuthState {
   const factory _Authenticated({
     required final UserEntity user,
-    required final String token,
-    required final DateTime tokenExpiry,
+    required final String accessToken,
   }) = _$AuthenticatedImpl;
 
   UserEntity get user;
-  String get token;
-  DateTime get tokenExpiry;
+  String get accessToken;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthenticatedImplCopyWith<_$AuthenticatedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-    _$ErrorImpl value,
-    $Res Function(_$ErrorImpl) then,
-  ) = __$$ErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message, String? errorCode});
-}
-
-/// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-    _$ErrorImpl _value,
-    $Res Function(_$ErrorImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? message = null, Object? errorCode = freezed}) {
-    return _then(
-      _$ErrorImpl(
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-        errorCode: freezed == errorCode
-            ? _value.errorCode
-            : errorCode // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.message, this.errorCode});
-
-  @override
-  final String message;
-  @override
-  final String? errorCode;
-
-  @override
-  String toString() {
-    return 'AuthState.error(message: $message, errorCode: $errorCode)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.errorCode, errorCode) ||
-                other.errorCode == errorCode));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, message, errorCode);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
-    authenticated,
-    required TResult Function(String message, String? errorCode) error,
-    required TResult Function() unauthenticated,
-  }) {
-    return error(message, errorCode);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
-    TResult? Function()? unauthenticated,
-  }) {
-    return error?.call(message, errorCode);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
-    TResult Function()? unauthenticated,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message, errorCode);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Unauthenticated value) unauthenticated,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Unauthenticated value)? unauthenticated,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
-    TResult Function(_Unauthenticated value)? unauthenticated,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Error implements AuthState {
-  const factory _Error({
-    required final String message,
-    final String? errorCode,
-  }) = _$ErrorImpl;
-
-  String get message;
-  String? get errorCode;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -792,14 +572,10 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-      UserEntity user,
-      String token,
-      DateTime tokenExpiry,
-    )
+    required TResult Function(UserEntity user, String accessToken)
     authenticated,
-    required TResult Function(String message, String? errorCode) error,
     required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
   }) {
     return unauthenticated();
   }
@@ -809,10 +585,9 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult? Function(String message, String? errorCode)? error,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
     TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
   }) {
     return unauthenticated?.call();
   }
@@ -822,10 +597,9 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserEntity user, String token, DateTime tokenExpiry)?
-    authenticated,
-    TResult Function(String message, String? errorCode)? error,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
     TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -840,8 +614,8 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Authenticated value) authenticated,
-    required TResult Function(_Error value) error,
     required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
   }) {
     return unauthenticated(this);
   }
@@ -852,8 +626,8 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Authenticated value)? authenticated,
-    TResult? Function(_Error value)? error,
     TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
   }) {
     return unauthenticated?.call(this);
   }
@@ -864,8 +638,8 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Authenticated value)? authenticated,
-    TResult Function(_Error value)? error,
     TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -877,4 +651,165 @@ class _$UnauthenticatedImpl implements _Unauthenticated {
 
 abstract class _Unauthenticated implements AuthState {
   const factory _Unauthenticated() = _$UnauthenticatedImpl;
+}
+
+/// @nodoc
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+    _$ErrorImpl value,
+    $Res Function(_$ErrorImpl) then,
+  ) = __$$ErrorImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({AuthException error});
+}
+
+/// @nodoc
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+    _$ErrorImpl _value,
+    $Res Function(_$ErrorImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? error = null}) {
+    return _then(
+      _$ErrorImpl(
+        null == error
+            ? _value.error
+            : error // ignore: cast_nullable_to_non_nullable
+                  as AuthException,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.error);
+
+  @override
+  final AuthException error;
+
+  @override
+  String toString() {
+    return 'AuthState.error(error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ErrorImpl &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(UserEntity user, String accessToken)
+    authenticated,
+    required TResult Function() unauthenticated,
+    required TResult Function(AuthException error) error,
+  }) {
+    return error(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(UserEntity user, String accessToken)? authenticated,
+    TResult? Function()? unauthenticated,
+    TResult? Function(AuthException error)? error,
+  }) {
+    return error?.call(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(UserEntity user, String accessToken)? authenticated,
+    TResult Function()? unauthenticated,
+    TResult Function(AuthException error)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this.error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Error value) error,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_Unauthenticated value)? unauthenticated,
+    TResult? Function(_Error value)? error,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Error implements AuthState {
+  const factory _Error(final AuthException error) = _$ErrorImpl;
+
+  AuthException get error;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

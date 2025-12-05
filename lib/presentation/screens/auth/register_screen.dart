@@ -22,19 +22,17 @@ class RegisterScreen extends ConsumerStatefulWidget {
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   // Form controllers
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   // Form state
   bool _isVisuallyImpaired = false;
-  DisabilitySeverity _disabilitySeverity = DisabilitySeverity.none;
+  ImpairmentLevel _impairmentLevel = ImpairmentLevel.none;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
   // Validation errors
-  String? _nameError;
   String? _emailError;
   String? _passwordError;
   String? _confirmPasswordError;
@@ -46,30 +44,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     // TTS announcement when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ttsService = ref.read(ttsServiceProvider);
-      ttsService.speak(
-        '회원가입 화면입니다. 이름, 이메일, 비밀번호를 입력하고 시각장애 여부를 선택해주세요.',
-      );
+      ttsService.speak('회원가입 화면입니다. 이메일, 비밀번호를 입력하고 시각장애 여부를 선택해주세요.');
     });
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
-  }
-
-  /// Validate name field
-  String? _validateName(String value) {
-    if (value.trim().isEmpty) {
-      return '이름을 입력해주세요.';
-    }
-    if (value.trim().length < 2) {
-      return '이름은 2자 이상이어야 합니다.';
-    }
-    return null;
   }
 
   /// Validate email field
@@ -114,7 +98,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   /// Validate disability severity selection
   String? _validateDisability() {
-    if (_isVisuallyImpaired && _disabilitySeverity == DisabilitySeverity.none) {
+    if (_isVisuallyImpaired && _impairmentLevel == ImpairmentLevel.none) {
       return '시각장애 정도를 선택해주세요.';
     }
     return null;
@@ -123,14 +107,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   /// Validate all form fields
   bool _validateForm() {
     setState(() {
-      _nameError = _validateName(_nameController.text);
       _emailError = _validateEmail(_emailController.text);
       _passwordError = _validatePassword(_passwordController.text);
-      _confirmPasswordError = _validateConfirmPassword(_confirmPasswordController.text);
+      _confirmPasswordError = _validateConfirmPassword(
+        _confirmPasswordController.text,
+      );
       _disabilityError = _validateDisability();
     });
 
-    final hasErrors = _nameError != null ||
+    final hasErrors =
         _emailError != null ||
         _passwordError != null ||
         _confirmPasswordError != null ||
@@ -157,31 +142,45 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     // Call register method from auth notifier
     final authNotifier = ref.read(authNotifierProvider.notifier);
+
+    // Convert ImpairmentLevel to API string
+    String impairmentLevelString;
+    if (!_isVisuallyImpaired) {
+      impairmentLevelString = 'NONE';
+    } else {
+      switch (_impairmentLevel) {
+        case ImpairmentLevel.totalBlindness:
+          impairmentLevelString = 'TOTAL_BLINDNESS';
+          break;
+        case ImpairmentLevel.lowVision:
+          impairmentLevelString = 'LOW_VISION';
+          break;
+        case ImpairmentLevel.none:
+          impairmentLevelString = 'NONE';
+          break;
+      }
+    }
+
     await authNotifier.register(
       email: _emailController.text.trim(),
       password: _passwordController.text,
-      name: _nameController.text.trim(),
+      userType: 'MAIN_USER',
       isVisuallyImpaired: _isVisuallyImpaired,
-      disabilitySeverity: _isVisuallyImpaired
-          ? _disabilitySeverity
-          : DisabilitySeverity.none,
-      enableTts: _isVisuallyImpaired,
+      impairmentLevel: impairmentLevelString,
     );
 
     // Check registration result
     final authState = ref.read(authNotifierProvider);
     authState.maybeWhen(
-      authenticated: (_, __, ___) {
-        // Registration successful - navigation handled by app router
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
+      authenticated: (user, accessToken) {
+        // Registration successful
+        // Navigation to onboarding is handled automatically by AuthWrapper
       },
-      error: (message, _) {
+      error: (error) {
         // Error handled by auth notifier TTS
         // Show error dialog for visual users
         if (mounted && !_isVisuallyImpaired) {
-          _showErrorDialog(message);
+          _showErrorDialog(error.message);
         }
       },
       orElse: () {},
@@ -225,10 +224,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               Semantics(
                 header: true,
                 label: '회원가입',
-                child: Text(
-                  '회원가입',
-                  style: AppTypography.headline1,
-                ),
+                child: Text('회원가입', style: AppTypography.headline1),
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
@@ -244,25 +240,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // Name field
-                      AppTextField(
-                        label: '이름',
-                        hint: '이름을 입력하세요',
-                        semanticLabel: '이름 입력 필드',
-                        controller: _nameController,
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        errorText: _nameError,
-                        enabled: !isLoading,
-                        prefixIcon: Icons.person_outline,
-                        onChanged: (_) {
-                          if (_nameError != null) {
-                            setState(() => _nameError = null);
-                          }
-                        },
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-
                       // Email field
                       AppTextField(
                         label: '이메일',
@@ -324,7 +301,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                         onSuffixIconTap: () {
-                          setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                          setState(
+                            () => _obscureConfirmPassword =
+                                !_obscureConfirmPassword,
+                          );
                         },
                         onChanged: (_) {
                           if (_confirmPasswordError != null) {
@@ -356,22 +336,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               checked: _isVisuallyImpaired,
                               enabled: !isLoading,
                               child: InkWell(
-                                onTap: isLoading ? null : () {
-                                  HapticFeedback.selectionClick();
-                                  setState(() {
-                                    _isVisuallyImpaired = !_isVisuallyImpaired;
-                                    if (!_isVisuallyImpaired) {
-                                      _disabilitySeverity = DisabilitySeverity.none;
-                                      _disabilityError = null;
-                                    }
-                                  });
-                                  final ttsService = ref.read(ttsServiceProvider);
-                                  ttsService.speak(
-                                    _isVisuallyImpaired
-                                        ? '시각장애 선택됨. 장애 정도를 선택해주세요.'
-                                        : '시각장애 선택 해제됨.',
-                                  );
-                                },
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        HapticFeedback.selectionClick();
+                                        setState(() {
+                                          _isVisuallyImpaired =
+                                              !_isVisuallyImpaired;
+                                          if (!_isVisuallyImpaired) {
+                                            _impairmentLevel =
+                                                ImpairmentLevel.none;
+                                            _disabilityError = null;
+                                          }
+                                        });
+                                        final ttsService = ref.read(
+                                          ttsServiceProvider,
+                                        );
+                                        ttsService.speak(
+                                          _isVisuallyImpaired
+                                              ? '시각장애 선택됨. 장애 정도를 선택해주세요.'
+                                              : '시각장애 선택 해제됨.',
+                                        );
+                                      },
                                 child: Row(
                                   children: [
                                     Container(
@@ -425,18 +411,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               // Total blindness option
                               Semantics(
                                 label: '전맹 (완전 시각장애)',
-                                selected: _disabilitySeverity == DisabilitySeverity.totalBlindness,
+                                selected:
+                                    _impairmentLevel ==
+                                    ImpairmentLevel.totalBlindness,
                                 enabled: !isLoading,
                                 child: InkWell(
-                                  onTap: isLoading ? null : () {
-                                    HapticFeedback.selectionClick();
-                                    setState(() {
-                                      _disabilitySeverity = DisabilitySeverity.totalBlindness;
-                                      _disabilityError = null;
-                                    });
-                                    final ttsService = ref.read(ttsServiceProvider);
-                                    ttsService.speak('전맹 선택됨');
-                                  },
+                                  onTap: isLoading
+                                      ? null
+                                      : () {
+                                          HapticFeedback.selectionClick();
+                                          setState(() {
+                                            _impairmentLevel =
+                                                ImpairmentLevel.totalBlindness;
+                                            _disabilityError = null;
+                                          });
+                                          final ttsService = ref.read(
+                                            ttsServiceProvider,
+                                          );
+                                          ttsService.speak('전맹 선택됨');
+                                        },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: AppSpacing.sm,
@@ -449,21 +442,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all(
-                                              color: _disabilitySeverity == DisabilitySeverity.totalBlindness
+                                              color:
+                                                  _impairmentLevel ==
+                                                      ImpairmentLevel
+                                                          .totalBlindness
                                                   ? AppColors.primary
                                                   : AppColors.dividerLight,
                                               width: 2,
                                             ),
                                           ),
-                                          child: _disabilitySeverity == DisabilitySeverity.totalBlindness
+                                          child:
+                                              _impairmentLevel ==
+                                                  ImpairmentLevel.totalBlindness
                                               ? Center(
                                                   child: Container(
                                                     width: 10,
                                                     height: 10,
-                                                    decoration: const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: AppColors.primary,
-                                                    ),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              AppColors.primary,
+                                                        ),
                                                   ),
                                                 )
                                               : null,
@@ -484,18 +485,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               // Low vision option
                               Semantics(
                                 label: '저시력 (부분 시각장애)',
-                                selected: _disabilitySeverity == DisabilitySeverity.lowVision,
+                                selected:
+                                    _impairmentLevel ==
+                                    ImpairmentLevel.lowVision,
                                 enabled: !isLoading,
                                 child: InkWell(
-                                  onTap: isLoading ? null : () {
-                                    HapticFeedback.selectionClick();
-                                    setState(() {
-                                      _disabilitySeverity = DisabilitySeverity.lowVision;
-                                      _disabilityError = null;
-                                    });
-                                    final ttsService = ref.read(ttsServiceProvider);
-                                    ttsService.speak('저시력 선택됨');
-                                  },
+                                  onTap: isLoading
+                                      ? null
+                                      : () {
+                                          HapticFeedback.selectionClick();
+                                          setState(() {
+                                            _impairmentLevel =
+                                                ImpairmentLevel.lowVision;
+                                            _disabilityError = null;
+                                          });
+                                          final ttsService = ref.read(
+                                            ttsServiceProvider,
+                                          );
+                                          ttsService.speak('저시력 선택됨');
+                                        },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: AppSpacing.sm,
@@ -508,21 +516,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all(
-                                              color: _disabilitySeverity == DisabilitySeverity.lowVision
+                                              color:
+                                                  _impairmentLevel ==
+                                                      ImpairmentLevel.lowVision
                                                   ? AppColors.primary
                                                   : AppColors.dividerLight,
                                               width: 2,
                                             ),
                                           ),
-                                          child: _disabilitySeverity == DisabilitySeverity.lowVision
+                                          child:
+                                              _impairmentLevel ==
+                                                  ImpairmentLevel.lowVision
                                               ? Center(
                                                   child: Container(
                                                     width: 10,
                                                     height: 10,
-                                                    decoration: const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: AppColors.primary,
-                                                    ),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              AppColors.primary,
+                                                        ),
                                                   ),
                                                 )
                                               : null,
@@ -571,10 +586,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               SecondaryButton(
                 label: '로그인으로 돌아가기',
                 semanticLabel: '로그인 화면으로 돌아가기',
-                onPressed: isLoading ? null : () {
-                  HapticFeedback.lightImpact();
-                  Navigator.of(context).pop();
-                },
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        HapticFeedback.lightImpact();
+                        Navigator.of(context).pop();
+                      },
               ),
             ],
           ),

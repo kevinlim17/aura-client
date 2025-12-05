@@ -1,60 +1,43 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'user_entity.dart';
+import '../../data/services/auth_service.dart'; // For AuthException
 
 part 'auth_state.freezed.dart';
 
-/// Authentication state representation using freezed sealed class
 @freezed
 class AuthState with _$AuthState {
-  /// Initial state when app starts
   const factory AuthState.initial() = _Initial;
 
-  /// Loading state during authentication operations
   const factory AuthState.loading() = _Loading;
 
-  /// Authenticated state with user data and token
   const factory AuthState.authenticated({
     required UserEntity user,
-    required String token,
-    required DateTime tokenExpiry,
+    required String accessToken,
   }) = _Authenticated;
 
-  /// Error state with error message
-  const factory AuthState.error({
-    required String message,
-    String? errorCode,
-  }) = _Error;
-
-  /// Unauthenticated state (logged out)
   const factory AuthState.unauthenticated() = _Unauthenticated;
+
+  const factory AuthState.error(AuthException error) = _Error;
 }
 
-/// Extension for state checking
+// Extension for state checking and data access
 extension AuthStateX on AuthState {
   bool get isAuthenticated => this is _Authenticated;
   bool get isLoading => this is _Loading;
   bool get isError => this is _Error;
-  bool get isInitial => this is _Initial;
-  bool get isUnauthenticated => this is _Unauthenticated;
 
   UserEntity? get user => maybeWhen(
-        authenticated: (user, _, __) => user,
+        authenticated: (user, _) => user,
         orElse: () => null,
       );
 
-  String? get token => maybeWhen(
-        authenticated: (_, token, __) => token,
+  String? get accessToken => maybeWhen(
+        authenticated: (_, accessToken) => accessToken,
         orElse: () => null,
       );
 
-  DateTime? get tokenExpiry => maybeWhen(
-        authenticated: (_, __, expiry) => expiry,
+  AuthException? get error => maybeWhen(
+        error: (error) => error,
         orElse: () => null,
       );
-
-  bool get isTokenExpired {
-    final expiry = tokenExpiry;
-    if (expiry == null) return true;
-    return DateTime.now().isAfter(expiry);
-  }
 }

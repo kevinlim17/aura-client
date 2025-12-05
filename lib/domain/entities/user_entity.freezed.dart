@@ -23,14 +23,15 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
 mixin _$UserEntity {
   String get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get name =>
+      throw _privateConstructorUsedError; // Name is not returned from register endpoint
+  UserType get userType => throw _privateConstructorUsedError;
   bool get isVisuallyImpaired => throw _privateConstructorUsedError;
-  DisabilitySeverity get disabilitySeverity =>
-      throw _privateConstructorUsedError;
+  ImpairmentLevel get impairmentLevel => throw _privateConstructorUsedError;
+  bool get isOnboardingCompleted => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get lastLoginAt => throw _privateConstructorUsedError;
   String? get profileImageUrl => throw _privateConstructorUsedError;
-  String? get bio => throw _privateConstructorUsedError;
 
   /// Serializes this UserEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,13 +53,14 @@ abstract class $UserEntityCopyWith<$Res> {
   $Res call({
     String id,
     String email,
-    String name,
+    String? name,
+    UserType userType,
     bool isVisuallyImpaired,
-    DisabilitySeverity disabilitySeverity,
+    ImpairmentLevel impairmentLevel,
+    bool isOnboardingCompleted,
     DateTime createdAt,
     DateTime? lastLoginAt,
     String? profileImageUrl,
-    String? bio,
   });
 }
 
@@ -79,13 +81,14 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
   $Res call({
     Object? id = null,
     Object? email = null,
-    Object? name = null,
+    Object? name = freezed,
+    Object? userType = null,
     Object? isVisuallyImpaired = null,
-    Object? disabilitySeverity = null,
+    Object? impairmentLevel = null,
+    Object? isOnboardingCompleted = null,
     Object? createdAt = null,
     Object? lastLoginAt = freezed,
     Object? profileImageUrl = freezed,
-    Object? bio = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -97,18 +100,26 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
                       as String,
-            name: null == name
+            name: freezed == name
                 ? _value.name
                 : name // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
+            userType: null == userType
+                ? _value.userType
+                : userType // ignore: cast_nullable_to_non_nullable
+                      as UserType,
             isVisuallyImpaired: null == isVisuallyImpaired
                 ? _value.isVisuallyImpaired
                 : isVisuallyImpaired // ignore: cast_nullable_to_non_nullable
                       as bool,
-            disabilitySeverity: null == disabilitySeverity
-                ? _value.disabilitySeverity
-                : disabilitySeverity // ignore: cast_nullable_to_non_nullable
-                      as DisabilitySeverity,
+            impairmentLevel: null == impairmentLevel
+                ? _value.impairmentLevel
+                : impairmentLevel // ignore: cast_nullable_to_non_nullable
+                      as ImpairmentLevel,
+            isOnboardingCompleted: null == isOnboardingCompleted
+                ? _value.isOnboardingCompleted
+                : isOnboardingCompleted // ignore: cast_nullable_to_non_nullable
+                      as bool,
             createdAt: null == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -120,10 +131,6 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
             profileImageUrl: freezed == profileImageUrl
                 ? _value.profileImageUrl
                 : profileImageUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            bio: freezed == bio
-                ? _value.bio
-                : bio // ignore: cast_nullable_to_non_nullable
                       as String?,
           )
           as $Val,
@@ -143,13 +150,14 @@ abstract class _$$UserEntityImplCopyWith<$Res>
   $Res call({
     String id,
     String email,
-    String name,
+    String? name,
+    UserType userType,
     bool isVisuallyImpaired,
-    DisabilitySeverity disabilitySeverity,
+    ImpairmentLevel impairmentLevel,
+    bool isOnboardingCompleted,
     DateTime createdAt,
     DateTime? lastLoginAt,
     String? profileImageUrl,
-    String? bio,
   });
 }
 
@@ -169,13 +177,14 @@ class __$$UserEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? email = null,
-    Object? name = null,
+    Object? name = freezed,
+    Object? userType = null,
     Object? isVisuallyImpaired = null,
-    Object? disabilitySeverity = null,
+    Object? impairmentLevel = null,
+    Object? isOnboardingCompleted = null,
     Object? createdAt = null,
     Object? lastLoginAt = freezed,
     Object? profileImageUrl = freezed,
-    Object? bio = freezed,
   }) {
     return _then(
       _$UserEntityImpl(
@@ -187,18 +196,26 @@ class __$$UserEntityImplCopyWithImpl<$Res>
             ? _value.email
             : email // ignore: cast_nullable_to_non_nullable
                   as String,
-        name: null == name
+        name: freezed == name
             ? _value.name
             : name // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
+        userType: null == userType
+            ? _value.userType
+            : userType // ignore: cast_nullable_to_non_nullable
+                  as UserType,
         isVisuallyImpaired: null == isVisuallyImpaired
             ? _value.isVisuallyImpaired
             : isVisuallyImpaired // ignore: cast_nullable_to_non_nullable
                   as bool,
-        disabilitySeverity: null == disabilitySeverity
-            ? _value.disabilitySeverity
-            : disabilitySeverity // ignore: cast_nullable_to_non_nullable
-                  as DisabilitySeverity,
+        impairmentLevel: null == impairmentLevel
+            ? _value.impairmentLevel
+            : impairmentLevel // ignore: cast_nullable_to_non_nullable
+                  as ImpairmentLevel,
+        isOnboardingCompleted: null == isOnboardingCompleted
+            ? _value.isOnboardingCompleted
+            : isOnboardingCompleted // ignore: cast_nullable_to_non_nullable
+                  as bool,
         createdAt: null == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -211,28 +228,26 @@ class __$$UserEntityImplCopyWithImpl<$Res>
             ? _value.profileImageUrl
             : profileImageUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
-        bio: freezed == bio
-            ? _value.bio
-            : bio // ignore: cast_nullable_to_non_nullable
-                  as String?,
       ),
     );
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$UserEntityImpl implements _UserEntity {
   const _$UserEntityImpl({
     required this.id,
     required this.email,
-    required this.name,
+    this.name,
+    required this.userType,
     required this.isVisuallyImpaired,
-    required this.disabilitySeverity,
+    required this.impairmentLevel,
+    required this.isOnboardingCompleted,
     required this.createdAt,
     this.lastLoginAt,
     this.profileImageUrl,
-    this.bio,
   });
 
   factory _$UserEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -243,23 +258,26 @@ class _$UserEntityImpl implements _UserEntity {
   @override
   final String email;
   @override
-  final String name;
+  final String? name;
+  // Name is not returned from register endpoint
+  @override
+  final UserType userType;
   @override
   final bool isVisuallyImpaired;
   @override
-  final DisabilitySeverity disabilitySeverity;
+  final ImpairmentLevel impairmentLevel;
+  @override
+  final bool isOnboardingCompleted;
   @override
   final DateTime createdAt;
   @override
   final DateTime? lastLoginAt;
   @override
   final String? profileImageUrl;
-  @override
-  final String? bio;
 
   @override
   String toString() {
-    return 'UserEntity(id: $id, email: $email, name: $name, isVisuallyImpaired: $isVisuallyImpaired, disabilitySeverity: $disabilitySeverity, createdAt: $createdAt, lastLoginAt: $lastLoginAt, profileImageUrl: $profileImageUrl, bio: $bio)';
+    return 'UserEntity(id: $id, email: $email, name: $name, userType: $userType, isVisuallyImpaired: $isVisuallyImpaired, impairmentLevel: $impairmentLevel, isOnboardingCompleted: $isOnboardingCompleted, createdAt: $createdAt, lastLoginAt: $lastLoginAt, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -270,17 +288,20 @@ class _$UserEntityImpl implements _UserEntity {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.userType, userType) ||
+                other.userType == userType) &&
             (identical(other.isVisuallyImpaired, isVisuallyImpaired) ||
                 other.isVisuallyImpaired == isVisuallyImpaired) &&
-            (identical(other.disabilitySeverity, disabilitySeverity) ||
-                other.disabilitySeverity == disabilitySeverity) &&
+            (identical(other.impairmentLevel, impairmentLevel) ||
+                other.impairmentLevel == impairmentLevel) &&
+            (identical(other.isOnboardingCompleted, isOnboardingCompleted) ||
+                other.isOnboardingCompleted == isOnboardingCompleted) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.lastLoginAt, lastLoginAt) ||
                 other.lastLoginAt == lastLoginAt) &&
             (identical(other.profileImageUrl, profileImageUrl) ||
-                other.profileImageUrl == profileImageUrl) &&
-            (identical(other.bio, bio) || other.bio == bio));
+                other.profileImageUrl == profileImageUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -290,12 +311,13 @@ class _$UserEntityImpl implements _UserEntity {
     id,
     email,
     name,
+    userType,
     isVisuallyImpaired,
-    disabilitySeverity,
+    impairmentLevel,
+    isOnboardingCompleted,
     createdAt,
     lastLoginAt,
     profileImageUrl,
-    bio,
   );
 
   /// Create a copy of UserEntity
@@ -316,13 +338,14 @@ abstract class _UserEntity implements UserEntity {
   const factory _UserEntity({
     required final String id,
     required final String email,
-    required final String name,
+    final String? name,
+    required final UserType userType,
     required final bool isVisuallyImpaired,
-    required final DisabilitySeverity disabilitySeverity,
+    required final ImpairmentLevel impairmentLevel,
+    required final bool isOnboardingCompleted,
     required final DateTime createdAt,
     final DateTime? lastLoginAt,
     final String? profileImageUrl,
-    final String? bio,
   }) = _$UserEntityImpl;
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
@@ -333,19 +356,21 @@ abstract class _UserEntity implements UserEntity {
   @override
   String get email;
   @override
-  String get name;
+  String? get name; // Name is not returned from register endpoint
+  @override
+  UserType get userType;
   @override
   bool get isVisuallyImpaired;
   @override
-  DisabilitySeverity get disabilitySeverity;
+  ImpairmentLevel get impairmentLevel;
+  @override
+  bool get isOnboardingCompleted;
   @override
   DateTime get createdAt;
   @override
   DateTime? get lastLoginAt;
   @override
   String? get profileImageUrl;
-  @override
-  String? get bio;
 
   /// Create a copy of UserEntity
   /// with the given fields replaced by the non-null parameter values.
