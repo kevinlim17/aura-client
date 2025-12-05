@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
 import 'presentation/screens/auth/login_screen.dart';
+import 'presentation/screens/onboarding/profile_setup_screen.dart';
+import 'presentation/screens/onboarding/context_setup_screen.dart';
+import 'presentation/screens/onboarding/preferences_setup_screen.dart';
+import 'presentation/screens/home/home_screen.dart';
 import 'domain/providers/auth_provider.dart';
+import 'domain/providers/onboarding_provider.dart';
+import 'domain/entities/onboarding_data.dart';
+import 'domain/entities/user_entity.dart';
 
 void main() {
   runApp(
@@ -52,13 +59,16 @@ class AuthWrapper extends ConsumerWidget {
         return authState.when(
           initial: () => const LoginScreen(),
           loading: () => const _LoadingScreen(),
-          authenticated: (user, token, expiry) {
-            // TODO: Navigate to home screen when implemented
-            // For now, show a placeholder
-            return _AuthenticatedPlaceholder(userName: user.name);
+          authenticated: (user, accessToken) {
+            // Check if user needs onboarding
+            if (!user.isOnboardingCompleted) {
+              return const OnboardingRouter();
+            }
+            // User has completed onboarding - show home screen
+            return const HomeScreen();
           },
           unauthenticated: () => const LoginScreen(),
-          error: (message, errorCode) {
+          error: (error) {
             // Show login screen with error
             // Error is already announced via TTS in AuthNotifier
             return const LoginScreen();
@@ -117,57 +127,137 @@ class _ErrorScreen extends StatelessWidget {
   }
 }
 
-/// Placeholder for authenticated state
-/// TODO: Replace with actual home screen
-class _AuthenticatedPlaceholder extends ConsumerWidget {
-  final String userName;
-
-  const _AuthenticatedPlaceholder({required this.userName});
+/// Onboarding router that handles onboarding flow
+/// Routes to appropriate screen based on onboarding state
+class OnboardingRouter extends ConsumerStatefulWidget {
+  const OnboardingRouter({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OnboardingRouter> createState() => _OnboardingRouterState();
+}
+
+class _OnboardingRouterState extends ConsumerState<OnboardingRouter> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Start onboarding if not already started
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final onboardingState = ref.read(onboardingNotifierProvider);
+      final authState = ref.read(authNotifierProvider);
+
+      // Check if we need to start onboarding
+      final isAuthenticated = authState.maybeWhen(
+        authenticated: (_, __) => true,
+        orElse: () => false,
+      );
+
+      final isOnboardingInitial = onboardingState.maybeWhen(
+        initial: () => true,
+        orElse: () => false,
+      );
+
+      // Start onboarding if user is authenticated and onboarding hasn't started
+      if (isAuthenticated && isOnboardingInitial) {
+        final user = authState.maybeWhen(
+          authenticated: (user, _) => user,
+          orElse: () => null,
+        );
+
+        final enableTts = user?.requiresTts ?? false;
+        ref.read(onboardingNotifierProvider.notifier).startOnboarding(
+          enableTts: enableTts,
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final onboardingState = ref.watch(onboardingNotifierProvider);
+    final authState = ref.watch(authNotifierProvider);
+
+    final user = authState.maybeWhen(
+      authenticated: (user, _) => user,
+      orElse: () => null,
+    );
+
+    return onboardingState.when(
+      initial: () => const _LoadingScreen(),
+      loading: (_, __) => const _LoadingScreen(),
+      inProgress: (data) {
+        // Route to appropriate screen based on current step
+        return switch (data.currentStep) {
+          OnboardingStep.profile => const ProfileSetupScreen(),
+          OnboardingStep.context => const ContextSetupScreen(),
+          OnboardingStep.preferences => const PreferencesSetupScreen(),
+          OnboardingStep.completed => const HomeScreen(),
+        };
+      },
+      stepCompleted: (data, _) {
+        // Transition state - show loading
+        return const _LoadingScreen();
+      },
+      completed: (data) {
+        // Onboarding completed - show home screen
+        return const HomeScreen();
+      },
+      error: (message, _) {
+        // Show error and allow retry
+        return _OnboardingErrorScreen(
+          message: message,
+          onRetry: () {
+            final enableTts = user?.requiresTts ?? false;
+            ref.read(onboardingNotifierProvider.notifier).startOnboarding(
+              enableTts: enableTts,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+/// Error screen for onboarding failures
+class _OnboardingErrorScreen extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+
+  const _OnboardingErrorScreen({
+    required this.message,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Aura'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              ref.read(authNotifierProvider.notifier).logout(enableTts: true);
-            },
-            tooltip: '로그아웃',
-          ),
-        ],
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.check_circle_outline,
-              size: 80,
-              color: Colors.green,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              '환영합니다, $userName님!',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              '로그인에 성공했습니다.',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(authNotifierProvider.notifier).logout(enableTts: true);
-              },
-              child: const Text('로그아웃'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                size: 80,
+                color: Colors.red,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                message,
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: onRetry,
+                child: const Text('다시 시도'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

@@ -4,10 +4,7 @@ import 'app_colors.dart';
 /// Application typography settings
 /// Minimum font size: 16px for accessibility
 class AppTypography {
-  // Font Family
-  // 한글: Noto Sans KR (추후 pubspec.yaml에 추가)
-  // 영문: SF Pro (iOS), Roboto (Android) - 시스템 기본
-  static const String fontFamilyPrimary = 'NotoSansKR';
+  static const String fontFamilyPrimary = 'MaruBuri';
 
   // Display - 브랜딩, 온보딩 타이틀
   static const TextStyle display = TextStyle(
