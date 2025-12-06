@@ -47,6 +47,8 @@ dependencies:
 
   # Accessibility
   flutter_tts: ^4.2.0
+  # OCR
+  google_mlkit_text_recognition: ^0.15.0
 
   # JWT & Auth
   jwt_decoder: ^2.0.1
@@ -54,9 +56,13 @@ dependencies:
   # HTTP Client
   http: ^1.2.2
 
-  # Voice Recording
+  # Voice Recording & STT
   record: ^6.1.2
   path_provider: ^2.1.4
+  speech_to_text: ^7.0.0
+
+  # Camera
+  camera: ^0.11.0+2
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +79,7 @@ dev_dependencies:
   build_runner: ^2.4.13
   freezed: ^2.5.7
   json_serializable: ^6.8.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

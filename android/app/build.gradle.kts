@@ -37,6 +37,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    dependencies {
+        implementation ("com.google.mlkit:text-recognition-korean:16.0.0")
+    }
 }
 
 flutter {
