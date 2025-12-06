@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'tts_provider.dart';
 import '../entities/auth_state.dart';
 import '../entities/user_entity.dart';
 import '../../data/services/auth_service.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../core/utils/storage_service.dart';
-import '../../core/accessibility/tts_service.dart';
 import 'auth_notifier.dart';
 
 /// Configuration provider for base URL
@@ -44,11 +44,6 @@ final httpClientProvider = Provider<http.Client>((ref) {
 /// Storage service provider
 final storageServiceProvider = FutureProvider<StorageService>((ref) async {
   return await StorageServiceFactory.getInstance();
-});
-
-/// TTS service provider
-final ttsServiceProvider = Provider<TtsService>((ref) {
-  return TtsServiceSingleton.instance;
 });
 
 /// Auth service provider

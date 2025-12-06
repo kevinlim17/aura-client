@@ -4,6 +4,7 @@ import '../entities/preferences_entity.dart';
 import '../../data/services/preferences_service.dart';
 import 'preferences_notifier.dart';
 import 'auth_provider.dart';
+import 'tts_provider.dart';
 
 /// Preferences service provider
 final preferencesServiceProvider = Provider<PreferencesService>((ref) {

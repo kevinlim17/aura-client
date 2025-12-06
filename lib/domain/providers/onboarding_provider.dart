@@ -3,6 +3,7 @@ import '../entities/onboarding_data.dart';
 import '../entities/onboarding_state.dart';
 import 'onboarding_notifier.dart';
 import 'auth_provider.dart';
+import 'tts_provider.dart';
 
 /// Onboarding state notifier provider
 /// Main provider for managing onboarding flow

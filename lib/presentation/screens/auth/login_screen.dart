@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/auth_provider.dart';
+import '../../../domain/providers/tts_provider.dart';
 import '../../../domain/entities/auth_state.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
@@ -111,7 +112,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       password: _passwordController.text,
     );
 
-    // Check login result
+    // Check login result only if widget is still mounted
+    if (!mounted) return;
+
     final authState = ref.read(authNotifierProvider);
     authState.maybeWhen(
       authenticated: (user, accessToken) {
@@ -121,9 +124,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       error: (error) {
         // Error handled by auth notifier TTS
         // Show error dialog for visual users
-        if (mounted) {
-          _showErrorDialog(error.message);
-        }
+        _showErrorDialog(error.message);
       },
       orElse: () {},
     );

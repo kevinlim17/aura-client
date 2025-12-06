@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/onboarding_provider.dart';
 import '../../../domain/providers/auth_provider.dart';
 import '../../../domain/providers/profile_provider.dart';
+import '../../../domain/providers/tts_provider.dart';
 import '../../../domain/entities/onboarding_state.dart';
 import '../../../domain/entities/profile_entity.dart';
 import '../../../core/theme/app_colors.dart';

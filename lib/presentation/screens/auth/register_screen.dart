@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/auth_provider.dart';
+import '../../../domain/providers/tts_provider.dart';
 import '../../../domain/entities/auth_state.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../core/theme/app_colors.dart';
