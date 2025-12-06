@@ -284,6 +284,14 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
     state = const OnboardingState.initial();
   }
 
+  /// Mark onboarding as completed directly (used when profile already exists)
+  void markAsCompleted() {
+    final data = const OnboardingData().copyWith(
+      currentStep: OnboardingStep.completed,
+    );
+    state = OnboardingState.completed(data: data);
+  }
+
   /// Debug mode flag
   bool get debugMode => kDebugMode;
 }
