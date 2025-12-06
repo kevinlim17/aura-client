@@ -259,7 +259,7 @@ class _ContextSetupScreenState extends ConsumerState<ContextSetupScreen>
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -270,7 +270,7 @@ class _ContextSetupScreenState extends ConsumerState<ContextSetupScreen>
                   isScrollable: true,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                   indicator: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   tabs: ContextType.values.map((type) {

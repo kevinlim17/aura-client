@@ -45,7 +45,7 @@ class ImportanceSlider extends StatelessWidget {
                   activeTrackColor: _getColorForLevel(level),
                   inactiveTrackColor: Colors.grey.shade300,
                   thumbColor: _getColorForLevel(level),
-                  overlayColor: _getColorForLevel(level).withOpacity(0.2),
+                  overlayColor: _getColorForLevel(level).withValues(alpha: 0.2),
                   valueIndicatorColor: _getColorForLevel(level),
                   thumbShape: const RoundSliderThumbShape(
                     enabledThumbRadius: 12,
@@ -74,7 +74,7 @@ class ImportanceSlider extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: _getColorForLevel(level).withOpacity(0.2),
+                color: _getColorForLevel(level).withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Center(

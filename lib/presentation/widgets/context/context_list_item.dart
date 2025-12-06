@@ -24,7 +24,7 @@ class ContextListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: _getColorForType(this.context.contextType).withOpacity(0.3),
+          color: _getColorForType(this.context.contextType).withValues(alpha: 0.3),
           width: 2,
         ),
       ),
@@ -47,7 +47,7 @@ class ContextListItem extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: _getColorForType(this.context.contextType)
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(

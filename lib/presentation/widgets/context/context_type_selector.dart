@@ -48,7 +48,7 @@ class ContextTypeSelector extends StatelessWidget {
                   onTypeSelected(type);
                 }
               },
-              selectedColor: _getColorForType(type).withOpacity(0.3),
+              selectedColor: _getColorForType(type).withValues(alpha: 0.3),
               backgroundColor: Colors.grey.shade200,
               labelStyle: TextStyle(
                 color: isSelected ? _getColorForType(type) : Colors.black87,
