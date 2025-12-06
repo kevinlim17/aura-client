@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../screens/search/text_search_screen.dart';
+import '../../screens/search/voice_search_screen.dart';
+import '../../screens/search/camera_search_screen.dart';
 
 /// Search hub section with text, voice, and camera search options
 class SearchHubSection extends StatelessWidget {
@@ -68,25 +71,28 @@ class SearchHubSection extends StatelessWidget {
 
   void _handleTextSearch(BuildContext context) {
     HapticFeedback.mediumImpact();
-    // TODO: Navigate to text search screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('텍스트 검색 화면으로 이동')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const TextSearchScreen(),
+      ),
     );
   }
 
   void _handleVoiceSearch(BuildContext context) {
     HapticFeedback.mediumImpact();
-    // TODO: Navigate to voice search screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('음성 검색 화면으로 이동')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const VoiceSearchScreen(),
+      ),
     );
   }
 
   void _handleCameraSearch(BuildContext context) {
     HapticFeedback.mediumImpact();
-    // TODO: Navigate to camera search screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('카메라 검색 화면으로 이동')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const CameraSearchScreen(),
+      ),
     );
   }
 }
