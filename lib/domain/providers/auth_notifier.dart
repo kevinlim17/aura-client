@@ -23,14 +23,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
     required String password,
   }) async {
     state = const AuthState.loading();
+    debugPrint('[AuthNotifier] Login started');
 
     final result = await _authRepository.login(email: email, password: password);
+    debugPrint('[AuthNotifier] Login result: isSuccess=${result.isSuccess}');
 
     if (result.isSuccess) {
       _setAuthenticated(result.data!);
+      debugPrint('[AuthNotifier] State after _setAuthenticated: $state');
       await _ttsService.speak('로그인 성공했습니다.');
     } else {
       _setError(result.error!);
+      debugPrint('[AuthNotifier] Login error: ${result.error!.message}');
       await _ttsService.speak('로그인 실패: ${result.error!.message}');
     }
   }
@@ -81,11 +85,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void _setAuthenticated(UserEntity user) {
+    debugPrint('[AuthNotifier] _setAuthenticated called with user: ${user.id}');
     final accessToken = _authRepository.getToken();
+    debugPrint('[AuthNotifier] Token from repository: ${accessToken != null ? "exists" : "null"}');
     if (accessToken == null) {
+      debugPrint('[AuthNotifier] ERROR: Token is null!');
       state = AuthState.error(AuthException('Failed to get token after login'));
       return;
     }
+    debugPrint('[AuthNotifier] Setting state to authenticated, isOnboardingCompleted: ${user.isOnboardingCompleted}');
     state = AuthState.authenticated(user: user, accessToken: accessToken);
   }
 
