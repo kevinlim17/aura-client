@@ -47,6 +47,8 @@ dependencies:
 
   # Accessibility
   flutter_tts: ^4.2.0
+  # Audio playback
+  just_audio: ^0.10.5
   # OCR
   google_mlkit_text_recognition: ^0.15.0
 

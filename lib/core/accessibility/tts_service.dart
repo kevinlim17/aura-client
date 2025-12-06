@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -11,6 +12,13 @@ class TtsService {
   double _speechRate = 0.5; // 0.5 ~ 2.0
   double _pitch = 1.0; // 0.5 ~ 2.0
   String _voice = 'ko-KR'; // Default Korean
+
+  // Progress tracking
+  Timer? _progressTimer;
+  DateTime? _speechStartTime;
+  int? _estimatedDurationSeconds;
+  Function(int currentSeconds, int totalSeconds)? _onProgressUpdate;
+  Function()? _onComplete;
 
   /// Initialize TTS with default settings
   Future<void> initialize({
@@ -33,12 +41,15 @@ class TtsService {
       // Set completion handler
       _tts.setCompletionHandler(() {
         _isSpeaking = false;
+        _stopProgressTracking();
+        _onComplete?.call();
       });
 
       // Set error handler
       _tts.setErrorHandler((msg) {
         debugPrint('TTS Error: $msg');
         _isSpeaking = false;
+        _stopProgressTracking();
       });
 
       _isInitialized = true;
@@ -134,8 +145,82 @@ class TtsService {
   /// Get current voice
   String get voice => _voice;
 
+  /// Speak with progress tracking
+  Future<void> speakWithProgress(
+    String text, {
+    required int estimatedDurationSeconds,
+    Function(int currentSeconds, int totalSeconds)? onProgressUpdate,
+    Function()? onComplete,
+  }) async {
+    if (!_isInitialized) {
+      await initialize();
+    }
+
+    if (text.isEmpty) return;
+
+    try {
+      // Stop current speech
+      if (_isSpeaking) {
+        await stop();
+      }
+
+      // Set progress callbacks
+      _onProgressUpdate = onProgressUpdate;
+      _onComplete = onComplete;
+      _estimatedDurationSeconds = estimatedDurationSeconds;
+      _speechStartTime = DateTime.now();
+
+      // Start progress tracking
+      _startProgressTracking();
+
+      // Start TTS
+      _isSpeaking = true;
+      await _tts.speak(text);
+    } catch (e) {
+      debugPrint('Failed to speak with progress: $e');
+      _isSpeaking = false;
+      _stopProgressTracking();
+    }
+  }
+
+  /// Start progress tracking timer
+  void _startProgressTracking() {
+    _stopProgressTracking();
+
+    _progressTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_speechStartTime != null && _estimatedDurationSeconds != null) {
+        final elapsed = DateTime.now().difference(_speechStartTime!).inSeconds;
+        final total = _estimatedDurationSeconds!;
+
+        // Don't exceed total duration
+        final current = elapsed.clamp(0, total);
+
+        _onProgressUpdate?.call(current, total);
+
+        // Auto-stop timer if exceeded duration
+        if (elapsed >= total) {
+          timer.cancel();
+        }
+      }
+    });
+  }
+
+  /// Stop progress tracking timer
+  void _stopProgressTracking() {
+    _progressTimer?.cancel();
+    _progressTimer = null;
+    _speechStartTime = null;
+  }
+
+  /// Get current playback position in seconds (estimated)
+  int get currentPositionSeconds {
+    if (_speechStartTime == null) return 0;
+    return DateTime.now().difference(_speechStartTime!).inSeconds;
+  }
+
   /// Dispose resources
   Future<void> dispose() async {
+    _stopProgressTracking();
     await stop();
     _isInitialized = false;
   }
