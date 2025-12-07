@@ -11,6 +11,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
+import '../../navigation/app_routes.dart';
 
 /// Register screen for new user registration
 /// Supports accessibility features including TTS and visual impairment options
@@ -173,9 +174,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     // Check registration result
     final authState = ref.read(authNotifierProvider);
     authState.maybeWhen(
-      authenticated: (user, accessToken) {
+      authenticated: (user, accessToken) async {
         // Registration successful
-        // Navigation to onboarding is handled automatically by AuthWrapper
+        final ttsService = ref.read(ttsServiceProvider);
+        await ttsService.speak(
+          '회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.',
+        );
+
+        // Logout to clear the session
+        await ref.read(authNotifierProvider.notifier).logout();
+
+        // Navigate to login screen
+        if (mounted) {
+          await AppNavigation.toLogin(context);
+        }
       },
       error: (error) {
         // Error handled by auth notifier TTS

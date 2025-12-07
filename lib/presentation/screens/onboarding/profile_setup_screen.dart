@@ -10,12 +10,12 @@ import '../../../domain/entities/profile_entity.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_spacing.dart';
-import '../../../core/accessibility/tts_service.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
 import '../../widgets/step_progress_indicator.dart';
 import '../../widgets/voice_input_button.dart';
+import '../../navigation/app_routes.dart';
 
 /// Profile setup screen (Step 1 of onboarding)
 /// User selects interests, hobbies, favorite artists
@@ -227,12 +227,15 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
         request: profileRequest,
       );
 
-      ttsService.speak('프로필이 저장되었습니다.');
+      await ttsService.speak('프로필이 저장되었습니다. 컨텍스트 설정으로 이동합니다.');
 
       // Complete current step and move to next
       await ref.read(onboardingNotifierProvider.notifier).completeCurrentStep();
 
-      // Navigation handled by onboarding flow
+      // Navigate to context setup screen
+      if (mounted) {
+        await AppNavigation.replaceWithContextSetup(context);
+      }
     } catch (e) {
       setState(() => _isLoading = false);
 

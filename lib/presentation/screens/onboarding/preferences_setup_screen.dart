@@ -11,6 +11,7 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
+import '../../navigation/app_routes.dart';
 
 /// Preferences setup screen for onboarding
 /// Allows users to configure their preferences including TTS settings and accessibility options
@@ -512,12 +513,15 @@ class _PreferencesSetupScreenState
                   return;
                 }
 
-                await ttsService.speak('선호도 설정이 완료되었습니다.');
+                await ttsService.speak('선호도 설정이 완료되었습니다. 홈 화면으로 이동합니다.');
 
                 // Complete onboarding preferences step
                 await ref
                     .read(onboardingNotifierProvider.notifier)
                     .completeCurrentStep();
+
+                // Navigate to home screen
+                await AppNavigation.toHome(context);
               }
             },
       isLoading: isLoading,

@@ -12,7 +12,7 @@ import '../../../domain/providers/tts_provider.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
 import '../../widgets/app_text_field.dart';
-import 'docent_player_screen.dart';
+import '../../navigation/app_routes.dart';
 
 /// Docent generation screen with options
 class DocentGenerationScreen extends ConsumerStatefulWidget {
@@ -131,12 +131,9 @@ class _DocentGenerationScreenState
       if (next && mounted) {
         final session = ref.read(currentDocentSessionProvider);
         if (session != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => DocentPlayerScreen(
-                session: session,
-              ),
-            ),
+          AppNavigation.replaceWithDocentPlayer(
+            context,
+            session: session,
           );
         }
       }

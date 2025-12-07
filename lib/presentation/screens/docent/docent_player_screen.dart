@@ -9,7 +9,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../domain/entities/docent_entity.dart';
 import '../../../domain/providers/docent_provider.dart';
 import '../../../core/accessibility/native_tts_file_service.dart';
-import 'feedback_screen.dart';
+import '../../navigation/app_routes.dart';
 
 /// Docent player screen with audio playback using just_audio
 class DocentPlayerScreen extends ConsumerStatefulWidget {
@@ -237,11 +237,7 @@ class _DocentPlayerScreenState extends ConsumerState<DocentPlayerScreen> {
   /// Handle feedback button
   void _handleFeedback() {
     HapticFeedback.lightImpact();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => FeedbackScreen(session: widget.session),
-      ),
-    );
+    AppNavigation.toFeedback(context, session: widget.session);
   }
 
   /// Handle voice settings button

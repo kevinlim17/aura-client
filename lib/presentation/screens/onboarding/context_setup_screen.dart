@@ -17,6 +17,7 @@ import '../../widgets/step_progress_indicator.dart';
 import '../../widgets/context/emotion_tags_selector.dart';
 import '../../widgets/context/importance_slider.dart';
 import '../../widgets/context/voice_recorder_widget.dart';
+import '../../navigation/app_routes.dart';
 
 /// Context setup screen (Step 2 of onboarding)
 /// User provides context with enhanced input options
@@ -180,8 +181,16 @@ class _ContextSetupScreenState extends ConsumerState<ContextSetupScreen>
 
       _showSuccess('컨텍스트가 저장되었습니다');
 
+      final ttsService = ref.read(ttsServiceProvider);
+      await ttsService.speak('컨텍스트가 저장되었습니다. 선호도 설정으로 이동합니다.');
+
       // Complete current step and move to next
       await ref.read(onboardingNotifierProvider.notifier).completeCurrentStep();
+
+      // Navigate to preferences setup screen
+      if (mounted) {
+        await AppNavigation.replaceWithPreferencesSetup(context);
+      }
     } catch (e) {
       _showError('컨텍스트 저장에 실패했습니다: ${e.toString()}');
     }
@@ -191,8 +200,16 @@ class _ContextSetupScreenState extends ConsumerState<ContextSetupScreen>
   Future<void> _handleSkip() async {
     HapticFeedback.lightImpact();
 
+    final ttsService = ref.read(ttsServiceProvider);
+    await ttsService.speak('컨텍스트 설정을 건너뜁니다. 선호도 설정으로 이동합니다.');
+
     // Skip current step
     await ref.read(onboardingNotifierProvider.notifier).skipCurrentStep();
+
+    // Navigate to preferences setup screen
+    if (mounted) {
+      await AppNavigation.replaceWithPreferencesSetup(context);
+    }
   }
 
   /// Handle back button press

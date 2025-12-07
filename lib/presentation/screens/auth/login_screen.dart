@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/auth_provider.dart';
+import '../../../domain/providers/profile_provider.dart';
 import '../../../domain/providers/tts_provider.dart';
 import '../../../domain/entities/auth_state.dart';
 import '../../../core/theme/app_colors.dart';
@@ -10,7 +11,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
-import 'register_screen.dart';
+import '../../navigation/app_routes.dart';
 
 /// Login screen for user authentication
 /// Supports accessibility features including TTS
@@ -117,9 +118,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     final authState = ref.read(authNotifierProvider);
     authState.maybeWhen(
-      authenticated: (user, accessToken) {
-        // Login successful - navigation handled by app router
-        // Nothing to do here as main.dart will handle navigation
+      authenticated: (user, accessToken) async {
+        // Login successful - check if profile exists via profileService
+        final ttsService = ref.read(ttsServiceProvider);
+        debugPrint('[LoginScreen] Login successful, checking profile...');
+
+        try {
+          // Check if profile exists
+          final profileService = ref.read(profileServiceProvider);
+          await profileService.getProfile(
+            userId: int.parse(user.id),
+            accessToken: accessToken,
+          );
+
+          debugPrint('[LoginScreen] Profile exists! Going to home...');
+          // Profile exists - user has completed onboarding
+          await ttsService.speak(
+            '로그인 성공. 홈 화면으로 이동합니다.',
+          );
+
+          if (mounted) {
+            await AppNavigation.toHome(context);
+          }
+        } catch (e) {
+          debugPrint('[LoginScreen] Profile does not exist: $e');
+          // Profile doesn't exist - user needs to complete onboarding
+          await ttsService.speak(
+            '로그인 성공. 프로필 설정을 시작합니다.',
+          );
+
+          if (mounted) {
+            await AppNavigation.toProfileSetup(context);
+          }
+        }
       },
       error: (error) {
         // Error handled by auth notifier TTS
@@ -137,11 +168,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final ttsService = ref.read(ttsServiceProvider);
     ttsService.speak('회원가입 화면으로 이동합니다.');
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const RegisterScreen(),
-      ),
-    );
+    AppNavigation.toRegister(context);
   }
 
   /// Show error dialog
