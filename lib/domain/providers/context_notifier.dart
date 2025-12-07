@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../entities/context_state.dart';
 import '../entities/context_entity.dart';
 import '../usecases/context_management_usecase.dart';
-import '../../data/services/voice_service.dart';
 
 /// Context notifier for managing context submission
 class ContextNotifier extends StateNotifier<ContextState> {

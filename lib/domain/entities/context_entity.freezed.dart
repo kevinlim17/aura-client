@@ -285,8 +285,7 @@ class __$$ContextEntityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _$ContextEntityImpl implements _ContextEntity {
   const _$ContextEntityImpl({
     required this.id,
@@ -697,8 +696,7 @@ class __$$CreateContextRequestImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _$CreateContextRequestImpl implements _CreateContextRequest {
   const _$CreateContextRequestImpl({
     required this.contextType,

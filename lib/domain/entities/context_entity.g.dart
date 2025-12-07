@@ -9,43 +9,43 @@ part of 'context_entity.dart';
 _$ContextEntityImpl _$$ContextEntityImplFromJson(Map<String, dynamic> json) =>
     _$ContextEntityImpl(
       id: (json['id'] as num).toInt(),
-      userId: (json['user_id'] as num).toInt(),
-      contextType: $enumDecode(_$ContextTypeEnumMap, json['context_type']),
+      userId: (json['userId'] as num).toInt(),
+      contextType: $enumDecode(_$ContextTypeEnumMap, json['contextType']),
       title: json['title'] as String?,
       content: json['content'] as String,
-      voiceUrl: json['voice_url'] as String?,
-      voiceDurationSeconds: (json['voice_duration_seconds'] as num?)?.toInt(),
-      inputMethod: $enumDecode(_$InputMethodEnumMap, json['input_method']),
+      voiceUrl: json['voiceUrl'] as String?,
+      voiceDurationSeconds: (json['voiceDurationSeconds'] as num?)?.toInt(),
+      inputMethod: $enumDecode(_$InputMethodEnumMap, json['inputMethod']),
       emotionTags:
-          (json['emotion_tags'] as List<dynamic>?)
+          (json['emotionTags'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      importanceLevel: (json['importance_level'] as num?)?.toInt() ?? 3,
-      isCompanionInput: json['is_companion_input'] as bool? ?? false,
-      companionUserId: (json['companion_user_id'] as num?)?.toInt(),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null
+      importanceLevel: (json['importanceLevel'] as num?)?.toInt() ?? 3,
+      isCompanionInput: json['isCompanionInput'] as bool? ?? false,
+      companionUserId: (json['companionUserId'] as num?)?.toInt(),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
           ? null
-          : DateTime.parse(json['updated_at'] as String),
+          : DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$$ContextEntityImplToJson(_$ContextEntityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userId,
-      'context_type': _$ContextTypeEnumMap[instance.contextType]!,
+      'userId': instance.userId,
+      'contextType': _$ContextTypeEnumMap[instance.contextType]!,
       'title': instance.title,
       'content': instance.content,
-      'voice_url': instance.voiceUrl,
-      'voice_duration_seconds': instance.voiceDurationSeconds,
-      'input_method': _$InputMethodEnumMap[instance.inputMethod]!,
-      'emotion_tags': instance.emotionTags,
-      'importance_level': instance.importanceLevel,
-      'is_companion_input': instance.isCompanionInput,
-      'companion_user_id': instance.companionUserId,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'voiceUrl': instance.voiceUrl,
+      'voiceDurationSeconds': instance.voiceDurationSeconds,
+      'inputMethod': _$InputMethodEnumMap[instance.inputMethod]!,
+      'emotionTags': instance.emotionTags,
+      'importanceLevel': instance.importanceLevel,
+      'isCompanionInput': instance.isCompanionInput,
+      'companionUserId': instance.companionUserId,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
 const _$ContextTypeEnumMap = {
@@ -63,33 +63,33 @@ const _$InputMethodEnumMap = {
 _$CreateContextRequestImpl _$$CreateContextRequestImplFromJson(
   Map<String, dynamic> json,
 ) => _$CreateContextRequestImpl(
-  contextType: $enumDecode(_$ContextTypeEnumMap, json['context_type']),
+  contextType: $enumDecode(_$ContextTypeEnumMap, json['contextType']),
   title: json['title'] as String?,
   content: json['content'] as String,
-  voiceUrl: json['voice_url'] as String?,
-  voiceDurationSeconds: (json['voice_duration_seconds'] as num?)?.toInt(),
-  inputMethod: $enumDecode(_$InputMethodEnumMap, json['input_method']),
+  voiceUrl: json['voiceUrl'] as String?,
+  voiceDurationSeconds: (json['voiceDurationSeconds'] as num?)?.toInt(),
+  inputMethod: $enumDecode(_$InputMethodEnumMap, json['inputMethod']),
   emotionTags:
-      (json['emotion_tags'] as List<dynamic>?)
+      (json['emotionTags'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList() ??
       const [],
-  importanceLevel: (json['importance_level'] as num?)?.toInt() ?? 3,
-  isCompanionInput: json['is_companion_input'] as bool? ?? false,
-  companionUserId: (json['companion_user_id'] as num?)?.toInt(),
+  importanceLevel: (json['importanceLevel'] as num?)?.toInt() ?? 3,
+  isCompanionInput: json['isCompanionInput'] as bool? ?? false,
+  companionUserId: (json['companionUserId'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$$CreateContextRequestImplToJson(
   _$CreateContextRequestImpl instance,
 ) => <String, dynamic>{
-  'context_type': _$ContextTypeEnumMap[instance.contextType]!,
+  'contextType': _$ContextTypeEnumMap[instance.contextType]!,
   'title': instance.title,
   'content': instance.content,
-  'voice_url': instance.voiceUrl,
-  'voice_duration_seconds': instance.voiceDurationSeconds,
-  'input_method': _$InputMethodEnumMap[instance.inputMethod]!,
-  'emotion_tags': instance.emotionTags,
-  'importance_level': instance.importanceLevel,
-  'is_companion_input': instance.isCompanionInput,
-  'companion_user_id': instance.companionUserId,
+  'voiceUrl': instance.voiceUrl,
+  'voiceDurationSeconds': instance.voiceDurationSeconds,
+  'inputMethod': _$InputMethodEnumMap[instance.inputMethod]!,
+  'emotionTags': instance.emotionTags,
+  'importanceLevel': instance.importanceLevel,
+  'isCompanionInput': instance.isCompanionInput,
+  'companionUserId': instance.companionUserId,
 };

@@ -26,7 +26,6 @@ enum InputMethod {
 /// Context entity representing user-submitted context
 @freezed
 class ContextEntity with _$ContextEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ContextEntity({
     required int id,
     required int userId,
@@ -51,7 +50,6 @@ class ContextEntity with _$ContextEntity {
 /// Request model for creating a new context
 @freezed
 class CreateContextRequest with _$CreateContextRequest {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory CreateContextRequest({
     required ContextType contextType,
     String? title,
